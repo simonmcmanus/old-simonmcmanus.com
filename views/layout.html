@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>${title} </title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="http://simonmcmanus.com/node_static/style.css" itemprop="styles" />	
+
+		<!--[if IE]>
+		  <link rel="stylesheet" type="text/css" href="http://simonmcmanus.com/node_static/style.ie.css" />
+		<![endif]-->
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+		<script type="text/javascript">
+			$('head').append('<style>.item .content { display:none; opacity:0;} .item, .date {display:none;}#blackout {opacity:1; height:100%; width:100%;} #main-content {opacity:0}</style>');
+		</script>
+		<script type="text/javascript" src="http://simonmcmanus.com/node_static/core.js"></script>
+	</head>
+<body>
+<div id="blackout">
+	<div id="loading"><img src="http://simonmcmanus.com/node_static/images/loading.gif" /></div>
+</div>
+
+<div class="header">
+    <h1>SimonMcManus.com</h1>
+    <div id="subtitle">${subtitle}</div>
+</div>
+<div id="container">
+    <div class="nav">
+        <a class="activity ${activitySelected}" href="/">Activity</a>
+        <a class="contact ${contactSelected}" href="/contact.html">Contact</a>
+        <a href="/about.html" class="about ${aboutSelected}">About</a>
+ 	</div>
+	<div id="main-content">{{html body}}</div>
+</div>
+<div class="footer footerReflect"></div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-530421-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script type="text/javascript" src="http://simonmcmanus.com/node_static/lib/jquery.effects.core.js"></script>
+<script type="text/javascript" src="http://simonmcmanus.com/node_static/core.js"></script>
+<script type="text/javascript" src="http://simonmcmanus.com/node_static/animations.js"></script>
+
+</body>
+</html>
