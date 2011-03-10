@@ -7,14 +7,22 @@ var $ = require( "jquery" );
 var stuff = "/mnt/www/simonmcmanus.com/stuff/";
 
 // lifestream bits n 
-var rss = require('../rss-aggregator/node-rss.js');
-var lifestream = require('../rss-aggregator/sortItems.js');
+var rss = require('/mnt/www/simonmcmanus.com/node/rss-aggregator/node-rss.js');
+var lifestream = require('/mnt/www/simonmcmanus.com/node/rss-aggregator/sortItems.js');
 var pretty = require('../yuie/prettyDates.js');
 
 
 var app = module.exports = express.createServer();
 app.set( "view engine", "html" );
 app.register( ".html", jqtpl);
+
+
+
+// REQUIRED TO RUN WITH UPSTART 
+app.configure(function(){
+    app.set('views', __dirname + '/views');
+    app.set('views');
+ });
 
 
 var processItem = function(item) {
@@ -129,10 +137,16 @@ app.get('/', function(req, res) {
 	
 
 	var completeCallback = function(arguments) {
-		console.log('complete callback');
+		if(typeof arguments === "undefined"){
+			console.log('something went wrong');
+			return false;
+		}
+		console.log('complete callback 0', arguments) ;
 		smm.items = smm.items.concat(arguments);
+		console.log('complete callback 1', smm.items, smm.requestCount);
 		smm.requestCount--;
 		if(smm.requestCount == 0){
+			console.log('all in', smm.items);
 			var html = buildHtml(lifestream.sortItems(smm.items));
 			res.render('template', {
 			    locals: {
@@ -140,11 +154,10 @@ app.get('/', function(req, res) {
 					content:html,
 					activitySelected: 'selected'
 			    }
-			}, function(a, items) {
-				// do jquery bits here to items.
-				res.send(items);
 			});
 		}
+		console.log('complete callback FINAL');
+
 	};
 	for(var item in smm.requests){
 		if (typeof item !== "undefined") {
