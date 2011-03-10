@@ -1,0 +1,15 @@
+{{each(i, date) items}}
+	<h2>${date.key}</h2>
+	
+	{{each(j, name) date}}
+	    <div class="item ${name.type}">
+			${name.title}
+			<div class="content">
+				${name.body}
+			</div>
+			<div class="bottom">
+				${name.link}
+			</div>
+		</div>
+	{{/each}}        
+{{/each}}        
