@@ -14,7 +14,9 @@ var agg = require('./smm-aggregator.js');
 // Express config 
 var app = module.exports = express.createServer();
 app.set( "view engine", "html" );
+
 app.register( ".html", jqtpl);
+app.register( ".xml", jqtpl);
 
 // REQUIRED TO RUN WITH UPSTART 
 app.configure(function(){
@@ -66,6 +68,35 @@ app.get('/', function(req, res) {
 					items: agg.buildDateObj(lifestream.sortItems(smm.items))
 			    }
 			});
+		}
+	};
+	
+	for(var item in smm.requests){
+		smm.requestCount++;
+		rss.doGet(smm.requests[item], item, function(data, item) {
+			var p = rss.newRssParser(item, completeCallback);
+			p.parseString(data);
+		});
+	}
+});
+
+
+app.get('/rss.xml', function(req, res) {	
+	smm.items = []; // reset items 
+	var completeCallback = function(arguments) {
+		smm.items = smm.items.concat(arguments);
+		smm.requestCount--;
+		if(smm.requestCount == 0){
+			res.header('Content-Type', 'application/xml'); 
+			res.render('activity.xml', {
+		    	layout:false,
+			    locals: {
+					title:smm.pages.activity.title,
+					subtitle:smm.pages.activity.description,
+					activitySelected: 'selected',
+					items: agg.buildDateObj(lifestream.sortItems(smm.items))
+			    }
+			});		
 		}
 	};
 	
